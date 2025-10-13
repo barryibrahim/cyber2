@@ -22,7 +22,7 @@ final class ChangeMotpasseController extends AbstractController
         // Vérifiez si l'utilisateur est connecté
         if (!$user) {
             $this->addFlash('error', 'Vous devez être connecté pour changer votre mot de passe.');
-            return $this->redirectToRoute('app_login'); // Redirige vers la page de connexion
+            return $this->redirectToRoute('app_login'); 
         }
 
       // Créer le formulaire pour modifier le mot de passe
@@ -56,7 +56,7 @@ final class ChangeMotpasseController extends AbstractController
 
        // Rendre la page avec le formulaire
        return $this->render('change_motpasse/index.html.twig', [
-           'form' => $form->createView(), // Passer le formulaire à la vue
+           'form' => $form->createView(), 
        ]);
    }
 }
