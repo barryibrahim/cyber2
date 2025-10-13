@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Compte Verrouillé
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid text-center" style="margin-top: 20vh;">
+		<div class="alert alert-warning" role="alert">
+			<h4 class="alert-heading">Attention!</h4>
+			<p>{{ message }}</p>
+			<hr>
+			<p class="mb-0">Veuillez patienter avant de réessayer.</p>
+		</div>
+		<a href="{{ path('app_login') }}" class="btn btn-primary mt-3">Retour à la page de connexion</a>
+	</div>
+{% endblock %}
