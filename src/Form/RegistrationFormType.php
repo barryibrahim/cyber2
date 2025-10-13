@@ -5,7 +5,8 @@ namespace App\Form;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType; 
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,7 +23,7 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email',EmailType::class, ['attr' => ['class'=> 'form-control'], 'label_attr' => ['class'=>
+            ->add('email', EmailType::class, ['attr' => ['class' => 'form-control'], 'label_attr' => ['class' =>
             'fw-bold']])
             ->add('nom', TextType::class, [
                 'attr' => ['class' => 'form-control'],
@@ -73,10 +74,20 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('plainPassword', PasswordType::class, [
+            ->add('plainPassword', RepeatedType::class, [
+                'type' => PasswordType::class,
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password', 'class'=> 'form-control'],
-                'label_attr' => ['class'=> 'fw-bold'],
+                'first_options' => [
+                    'label' => 'Mot de passe',
+                    'attr' => ['autocomplete' => 'new-password', 'class' => 'form-control'],
+                    'label_attr' => ['class' => 'fw-bold'],
+                ],
+                'second_options' => [
+                    'label' => 'Confirmer le mot de passe',
+                    'attr' => ['autocomplete' => 'new-password', 'class' => 'form-control'],
+                    'label_attr' => ['class' => 'fw-bold'],
+                ],
+                'invalid_message' => 'Les deux mots de passe doivent correspondre.',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez saisir un mot de passe.',
@@ -101,11 +112,11 @@ class RegistrationFormType extends AbstractType
                         'pattern' => '/[\W_]/',
                         'message' => 'Le mot de passe doit contenir au moins un caractère spécial.',
                     ]),
-                    new NotCompromisedPassword(['message' => 'Ce mot de passe a déjà été compromis sur Internet, veuillez en choisir un autre.']),
+                    new NotCompromisedPassword([
+                        'message' => 'Ce mot de passe a déjà été compromis sur Internet, veuillez en choisir un autre.',
+                    ]),
                 ],
-            ])
-            
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
