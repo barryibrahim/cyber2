@@ -33,7 +33,8 @@ final class ChangeMotpasseController extends AbstractController
       if ($form->isSubmitted() && $form->isValid()) {
           // Récupérer les données du formulaire
           $data = $form->getData();
-          $newPassword = $data['newPassword']; // Nouveau mot de passe
+          $newPassword = $form->get('newPassword')->getData();
+          // Nouveau mot de passe
 
             // Vérifiez si le nouvel mot de passe n'est pas le même que l'ancien
             if (password_verify($newPassword, $user->getPassword())) {

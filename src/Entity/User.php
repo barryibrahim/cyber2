@@ -51,6 +51,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?\DateTime $dateInscription = null;
 
+    #[ORM\Column(type: 'boolean')]
+    private ?bool $isActive = true; // ✅ Compte actif par défaut
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $historiqueConnexions = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -64,45 +69,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
+        // Chaque utilisateur a au minimum ROLE_USER
         $roles[] = 'ROLE_USER';
-
         return array_unique($roles);
     }
 
-    /**
-     * @param list<string> $roles
-     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
-
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
     public function getPassword(): ?string
     {
         return $this->password;
@@ -111,14 +99,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
         return $this;
     }
 
     #[\Deprecated]
     public function eraseCredentials(): void
     {
-        // @deprecated, to be removed when upgrading to Symfony 8
+        // Rien à faire ici
     }
 
     public function getNom(): ?string
@@ -129,7 +116,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setNom(string $nom): static
     {
         $this->nom = $nom;
-
         return $this;
     }
 
@@ -141,7 +127,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPrenom(string $prenom): static
     {
         $this->prenom = $prenom;
-
         return $this;
     }
 
@@ -153,7 +138,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setVille(string $ville): static
     {
         $this->ville = $ville;
-
         return $this;
     }
 
@@ -165,7 +149,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCodepostal(string $codepostal): static
     {
         $this->codepostal = $codepostal;
-
         return $this;
     }
 
@@ -177,7 +160,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAdresse(string $adresse): static
     {
         $this->adresse = $adresse;
-
         return $this;
     }
 
@@ -189,7 +171,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setDateInscription(\DateTime $dateInscription): static
     {
         $this->dateInscription = $dateInscription;
+        return $this;
+    }
 
+    // ✅ Nouveau champ : statut actif ou suspendu
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
+        return $this;
+    }
+    public function getHistoriqueConnexions(): ?array
+    {
+        return $this->historiqueConnexions;
+    }
+
+    public function setHistoriqueConnexions(?array $historiqueConnexions): self
+    {
+        $this->historiqueConnexions = $historiqueConnexions;
         return $this;
     }
 }
